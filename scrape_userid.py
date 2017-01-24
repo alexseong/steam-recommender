@@ -59,9 +59,13 @@ def gen_user_ids(user_id):
     Q = deque()
     Q.append(user_id)
     for user in randlst:
-        Q.append(user)
+        Q.append(str(user))
 
-    file_name = '/Users/lawrence.chim/Desktop/Galvanize/Capstone/Data/user_ids_{}.txt'
+    # Local Machine
+    # file_name = '/Users/lawrence.chim/Desktop/Galvanize/Capstone/Data/user_ids_{}.txt'
+
+    # AWS
+    file_name = './Data/user_ids_{}.txt'
     cur_file = file_name.format(int(num_checked/1000) + 1)
     f = open(cur_file, 'w+')
     f.write(user_id)
