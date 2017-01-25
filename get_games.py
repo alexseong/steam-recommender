@@ -36,7 +36,7 @@ def label_games(gameslist):
         app_type = patt.sub('', app_type)
         types.append(app_type)
     gameslist['App_Type'] = types
-    return gameslist[gameslist['App_Type'] == 'Game']
+    return gameslist
 
 def write_games(df,path):
     return df.to_csv(path)
