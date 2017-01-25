@@ -1,3 +1,4 @@
+
 from bs4 import BeautifulSoup
 import requests
 from urllib2 import urlopen
@@ -42,4 +43,4 @@ def write_games(df,path):
 if __name__ == '__main__':
     gameslist = get_gameslist()
     allgames = label_games(gameslist)
-    write_games(allgames, '/Data/games.csv')
+    write_games(allgames, 'Data/games.csv')
