@@ -5,6 +5,7 @@ from collections import OrderedDict
 import json
 import pandas as pd
 import re
+import time
 
 def get_gameslist():
     gamelist = pd.DataFrame(columns=['App_ID', 'Title', 'App_Type'])
