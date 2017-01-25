@@ -45,8 +45,6 @@ def get_friends(steam_key, user_id):
         for i in xrange(len(data.get('friendslist').get('friends'))):
             uid = str(data.get('friendslist').get('friends')[i].values()[0])
             frd_lst.append(uid)
-    else:
-        return frd_lst
     return frd_lst
 
 # Generate a set of unique Steam user IDs, iterating through the get_friends function until a certain user count is reached
@@ -72,7 +70,7 @@ def gen_user_ids(user_id):
     f.write('\n')
 
     while Q:
-        if num_checked >= 2000000:
+        if num_checked >= 20000:
             return
         else:
             current = Q.popleft()
@@ -82,7 +80,7 @@ def gen_user_ids(user_id):
             for friend in get_friends(steam_key, current):
                 if num_checked % 10000 == 0 and num_checked != 0:
                     f.close()
-                    if num_checked == 2000000:  # Stop condition
+                    if num_checked == 20000:  # Stop condition
                         break
                     cur_file = file_name.format(int(num_checked/10000) + 1)
                     f = open(cur_file, 'w+')
@@ -100,5 +98,4 @@ Change unix date to regular date
 if __name__ == '__main__':
     steam_key = os.environ['STEAM_API_KEY']
     user_id = '76561198092289127'
-    # user_id = 76561197992668242
     gen_user_ids(user_id)
