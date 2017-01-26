@@ -49,7 +49,7 @@ def get_game(user, bucket_name, steam_key):
 
     conn = boto.connect_s3(access_key, access_secret_key)
     if conn.lookup(bucket_name) is None:
-        bucket = conn.create_bucket(bucket_name, policy='public-read', region = 'us-east-1')
+        bucket = conn.create_bucket(bucket_name, policy='public-read')
     else:
         bucket = conn.get_bucket(bucket_name)
 

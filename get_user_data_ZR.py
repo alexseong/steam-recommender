@@ -49,7 +49,7 @@ def get_game(user, bucket_name, steam_key):
 
     conn = boto.connect_s3(access_key, access_secret_key)
     if conn.lookup(bucket_name) is None:
-        bucket = conn.create_bucket(bucket_name, policy='public-read', region = 'us-east-1')
+        bucket = conn.create_bucket(bucket_name, policy='public-read')
     else:
         bucket = conn.get_bucket(bucket_name)
 
@@ -62,7 +62,7 @@ if __name__ == '__main__':
     users_1 = read_10_users(21,30)
     num_users = len(users_1)
     # Make 1000 threads
-    step_size = 400
+    step_size = 100
     steam_keys = [os.environ['STEAM_API_KEY'], os.environ['STEAM_API_KEY_BK'], \
                  os.environ['STEAM_API_KEY_ZR'], os.environ['STEAM_API_KEY_TN'], \
                  os.environ['STEAM_API_KEY_JV'], os.environ['STEAM_API_KEY_RK'], \
@@ -70,5 +70,5 @@ if __name__ == '__main__':
     start = datetime.now()
     print start
     for index in xrange(0, num_users+1, step_size):
-        parallelize_task(users_1[:index+400], 'steam-recommender', steam_keys[2])
+        parallelize_task(users_1[:index+100], 'steam-recommender', steam_keys[2])
     print 'Time taken: ' + (datetime.now()-start)
