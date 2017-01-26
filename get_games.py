@@ -7,6 +7,8 @@ import json
 import pandas as pd
 import re
 import time
+from threading import Thread
+from multiprocessing import Pool
 
 def get_gameslist():
     gamelist = pd.DataFrame(columns=['App_ID', 'Title', 'App_Type'])
@@ -23,8 +25,9 @@ def get_gameslist():
 
 def label_games(gameslist):
     types = []
-    for i in xrange(len(gameslist['App_ID'])):
-        url = 'https://steamdb.info/app/'+ str(gameslist['App_ID'][i])
+    apps = gameslist['App_ID']
+    for i, app in enumerate(apps):
+        url = 'https://steamdb.info/app/'+ str(app[i])
         try:
             html = requests.get(url).text
         except requests.ConnectionError:
@@ -43,5 +46,7 @@ def write_games(df,path):
 
 if __name__ == '__main__':
     gameslist = get_gameslist()
-    allgames = label_games(gameslist)
+    p = Pool(4)
+    p.map(label_games, gameslist)
+    # allgames = label_games(gameslist)
     write_games(allgames, 'Data/games.csv')

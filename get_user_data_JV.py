@@ -55,14 +55,14 @@ def get_game(user, bucket_name, steam_key):
 
     k = Key(bucket)
     filename = 'user_'+ user +'_games.json'
-    k.key = 'Data/games_per_user/'+filename
+    k.key = 'Data/JV/'+filename
     result = k.set_contents_from_string(json_str)
 
 if __name__ == '__main__':
-    users_1 = read_10_users(1,10)
+    users_1 = read_10_users(41,50)
     num_users = len(users_1)
     # Make 1000 threads
-    step_size = 200
+    step_size = 400
     steam_keys = [os.environ['STEAM_API_KEY'], os.environ['STEAM_API_KEY_BK'], \
                  os.environ['STEAM_API_KEY_ZR'], os.environ['STEAM_API_KEY_TN'], \
                  os.environ['STEAM_API_KEY_JV'], os.environ['STEAM_API_KEY_RK'], \
@@ -70,5 +70,5 @@ if __name__ == '__main__':
     start = datetime.now()
     print start
     for index in xrange(0, num_users+1, step_size):
-        parallelize_task(users_1[:index+200], 'steam-recommender', steam_keys[0])
+        parallelize_task(users_1[:index+400], 'steam-recommender', steam_keys[4])
     print 'Time taken: ' + (datetime.now()-start)
