@@ -62,7 +62,7 @@ if __name__ == '__main__':
     users_1 = read_10_users(1,10)
     num_users = len(users_1)
     # Make 1000 threads
-    step_size = 100
+    step_size = 3
     steam_keys = [os.environ['STEAM_API_KEY'], os.environ['STEAM_API_KEY_BK'], \
                  os.environ['STEAM_API_KEY_ZR'], os.environ['STEAM_API_KEY_TN'], \
                  os.environ['STEAM_API_KEY_JV'], os.environ['STEAM_API_KEY_RK'], \
@@ -70,5 +70,5 @@ if __name__ == '__main__':
     start = datetime.now()
     print start
     for index in xrange(0, num_users+1, step_size):
-        parallelize_task(users_1[:index+100], 'steam-recommender', steam_keys[0])
+        parallelize_task(users_1[:index+3], 'steam-recommender', steam_keys[0])
     print 'Time taken: ' + (datetime.now()-start)

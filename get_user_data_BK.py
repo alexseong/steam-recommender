@@ -40,7 +40,7 @@ def get_game(user, bucket_name, steam_key):
     try:
         url = urlopen(url)
     except urllib2.URLError:
-        time.sleep(5)
+        time.sleep(10)
         url = urlopen(url)
     user_id = {'userid':user}
     user_gamelist = json.loads(url.read())
@@ -62,7 +62,11 @@ if __name__ == '__main__':
     users_1 = read_10_users(11,20)
     num_users = len(users_1)
     # Make 1000 threads
+<<<<<<< HEAD
     step_size = 10
+=======
+    step_size = 3
+>>>>>>> 5574295d68ab6af11ebc7bed88f965ce2acf8131
     steam_keys = [os.environ['STEAM_API_KEY'], os.environ['STEAM_API_KEY_BK'], \
                  os.environ['STEAM_API_KEY_ZR'], os.environ['STEAM_API_KEY_TN'], \
                  os.environ['STEAM_API_KEY_JV'], os.environ['STEAM_API_KEY_RK'], \
@@ -70,5 +74,9 @@ if __name__ == '__main__':
     start = datetime.now()
     print start
     for index in xrange(0, num_users+1, step_size):
+<<<<<<< HEAD
         parallelize_task(users_1[:index+10], 'steam-recommender', steam_keys[1])
+=======
+        parallelize_task(users_1[:index+3], 'steam-recommender', steam_keys[1])
+>>>>>>> 5574295d68ab6af11ebc7bed88f965ce2acf8131
     print 'Time taken: ' + (datetime.now()-start)
