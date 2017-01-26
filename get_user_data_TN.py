@@ -9,6 +9,7 @@ import boto
 from boto.s3.key import Key
 from threading import Thread
 import os
+import time
 
 def read_10_users(start, stepsize):
     userlist = []
@@ -63,4 +64,4 @@ if __name__ == '__main__':
                  os.environ['STEAM_API_KEY_ZR'], os.environ['STEAM_API_KEY_TN'], \
                  os.environ['STEAM_API_KEY_JV'], os.environ['STEAM_API_KEY_RK'], \
                  os.environ['STEAM_API_KEY_CC']]
-    get_game(users_1, 'steam-recommender', steam_keys[w])
+    get_game(users_1, 'steam-recommender', steam_keys[3])

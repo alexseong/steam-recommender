@@ -9,6 +9,7 @@ import boto
 from boto.s3.key import Key
 from threading import Thread
 import os
+import time
 
 def read_10_users(start, stepsize):
     userlist = []
