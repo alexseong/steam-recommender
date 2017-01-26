@@ -35,15 +35,15 @@ def get_game(userlist, bucket_name, steam_key):
             url = urlopen(url)
         except urllib2.URLError:
             time.sleep(5)
+            url = urlopen(url)
         i += 1
-        url = urlopen(url)
         user_id = {'userid':user}
         user_gamelist = json.loads(url.read())
         user_gamelist.update(user_id)
         json_str = str(user_gamelist)
 
         if i % 200 == 0:
-            print i + "files have been downloaded"
+            print str(i) + "files have been downloaded"
             time.sleep(300)
         else:
             conn = boto.connect_s3(access_key, access_secret_key)
