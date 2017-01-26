@@ -58,7 +58,7 @@ def get_game(userlist, bucket_name, steam_key):
             result = k.set_contents_from_string(json_str)
 
 if __name__ == '__main__':
-    users_1 = read_10_users(1,10)
+    users_1 = read_10_users(71,80)
     # Make 1000 threads
     steam_keys = [os.environ['STEAM_API_KEY'], os.environ['STEAM_API_KEY_BK'], \
                  os.environ['STEAM_API_KEY_ZR'], os.environ['STEAM_API_KEY_TN'], \
