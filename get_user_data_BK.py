@@ -11,9 +11,9 @@ from threading import Thread
 import os
 import time
 
-def read_10_users(start, stepsize):
+def read_10_users(start, stop):
     userlist = []
-    for i in xrange(start,start+stepsize):
+    for i in xrange(start,stop+1):
         link = 'Data/user_ids/user_ids_{}.txt'.format(i)
         with open(link, 'r') as f:
             for line in f:
@@ -34,7 +34,7 @@ def get_game(userlist, bucket_name, steam_key):
         '_free_games=1&format=json'
         try:
             url = urlopen(url)
-        except urllib2.URLError:
+        except URLError:
             time.sleep(5)
             url = urlopen(url)
         i += 1
@@ -54,7 +54,7 @@ def get_game(userlist, bucket_name, steam_key):
                 bucket = conn.get_bucket(bucket_name)
             k = Key(bucket)
             filename = 'user_'+ user +'_games.json'
-            k.key = 'Data/BK/'+filename
+            k.key = 'Data/BK2/'+filename
             result = k.set_contents_from_string(json_str)
 
 if __name__ == '__main__':
