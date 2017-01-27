@@ -34,7 +34,7 @@ def get_game(userlist, bucket_name, steam_key):
         '_free_games=1&format=json'
         try:
             url = urlopen(url)
-        except URLError:
+        except (URLError,HTTPError):
             time.sleep(5)
             url = urlopen(url)
         i += 1
