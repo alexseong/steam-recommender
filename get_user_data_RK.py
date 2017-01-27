@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
-from urllib2 import urlopen
+from urllib2 import urlopen, URLError, HTTPError
 import json
 import pandas as pd
 import numpy as np
