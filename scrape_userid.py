@@ -47,11 +47,10 @@ def get_friends(steam_key, user_id):
             frd_lst.append(uid)
     return frd_lst
 
-# Generate a set of unique Steam user IDs, iterating through the get_friends function until a certain user count is reached
 def gen_user_ids(user_id):
 
     checked = set()
-    num_checked = 1   # My own user id
+    num_requests = 0
     randlst = gen_random_users("http://steamrep.com/list/D")
 
     Q = deque()
@@ -59,36 +58,37 @@ def gen_user_ids(user_id):
     for user in randlst:
         Q.append(str(user))
 
-    # Local Machine
-    # file_name = '/Users/lawrence.chim/Desktop/Galvanize/Capstone/Data/user_ids_{}.txt'
-
-    # AWS
-    file_name = './Data/user_ids_{}.txt'
-    cur_file = file_name.format(int(num_checked/1000) + 1)
-    f = open(cur_file, 'w+')
-    f.write(user_id)
-    f.write('\n')
-
     while Q:
-        if num_checked >= 20000:
-            return
-        else:
-            current = Q.popleft()
-            if current in checked:
+        if len(checked) >= 1000000:
+            break
+        if num_requests % 200 == 0 and num_requests != 0:
+            print str(num_requests) + ' requests has been made, will sleep for 5 minutes!'
+            print str(len(checked)) + ' number of users scraped'
+            time.sleep(300)
+        current = Q.popleft()
+        # if current in checked:
+        #     continue
+        for friend in get_friends(steam_key, current):
+            if friend in checked:
                 continue
-            checked.add(current)
-            for friend in get_friends(steam_key, current):
-                if num_checked % 10000 == 0 and num_checked != 0:
-                    f.close()
-                    if num_checked == 20000:  # Stop condition
-                        break
-                    cur_file = file_name.format(int(num_checked/10000) + 1)
-                    f = open(cur_file, 'w+')
-                Q.append(friend)
-                f.write(friend)
-                f.write('\n')
-                f.flush()
-                num_checked += 1
+            Q.append(friend)
+            checked.add(friend)
+        num_requests +=1
+
+    check_list = list(checked)
+    file_name = './Data/user_ids_{}.txt'
+    cur_file = file_name.format(1)
+    f = open(cur_file, 'w+')
+    count_files = 0
+
+    for item in check_list:
+        f.write(item)
+        f.write('\n')
+        count_files += 1
+        if count_files % 100000 == 0:
+            f.close()
+            cur_file = file_name.format(int(count_files/100000) + 1)
+            f = open(cur_file, 'w+')
 
 '''
 Change unix date to regular date
@@ -98,4 +98,4 @@ Change unix date to regular date
 if __name__ == '__main__':
     steam_key = os.environ['STEAM_API_KEY']
     user_id = '76561198092289127'
-    gen_user_ids(user_id)
+    gen_user_ids(user_id)ol

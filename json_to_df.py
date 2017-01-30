@@ -13,7 +13,7 @@ OUTPUT: Pandas Dataframe containing all games owned by a user, as well as time
         (in minutes) played
 '''
 def conv_json_to_df(filepath):
-    # json_dir_name = "s3://steam-recommender/Data/json_batch1"
+    # "s3://steam-recommender/Data/json_batch1"
     json_pattern = os.path.join(filepath) + '*.json'
     fileslist = glob(json_pattern)
     i = 0
@@ -30,12 +30,13 @@ def conv_json_to_df(filepath):
                 df_temp['userid'] = data['userid']
                 df_temp.rename(columns={'playtime_forever' : 'playhrs'}, inplace=True)
                 df_temp['playhrs'] = df_temp['playhrs'] / 60.0
+                df_temp['appid'] = df_temp['appid'].astype('str')
                 df_temp = df_temp[['userid','appid','playhrs']]
                 if df.empty:
                     df = pd.DataFrame(columns = df_temp.columns)
                 df = df.append(df_temp)
-        if i % 100000 == 0 or i == num_json:
-            df.to_csv(filepath + 'users_owned_games_{}.csv'.format(int(ceil(i/100000.0))), \
+        if i % 1000000 == 0 or i == num_json:
+            df.to_csv(filepath + 'users_owned_games_{}.csv'.format(int(ceil(i/1000000.0))), \
             index=False)
             df = df[0:0]
     return df
@@ -54,19 +55,16 @@ def pivot_data(filepath, df):
             df = pd.DataFrame(columns = df_temp.columns)
         df = df.append(df_temp)
 
-    df['has'] = 1
-    df['userid'] = df['userid'].apply(lambda x: str(int(x)))
-    df['userid'] = df['userid'].apply(lambda x: int(x))
-    df = df[['userid','appid','has','playhrs']]
+    df['userid'] = df['userid'].astype('int').astype('str')
+    df = df[['userid','appid','playhrs']]
     df = pd.pivot_table(df,index=['userid'], columns = ['appid'], \
-         values=['playhrs','has'],aggfunc=np.sum)
+         values=['playhrs'],aggfunc=np.sum)
     df.columns =[s1 + '_' + str(int(s2)) for (s1,s2) in df.columns.tolist()]
     df.fillna(0, inplace=True)
-    df[filter(lambda x: x.startswith("has"),df.columns)] = df[filter(lambda x: x.startswith("has"),df.columns)].astype(int)
     df.reset_index('userid', inplace=True)
     return df
 
 if __name__ == '__main__':
-    df = conv_json_to_df('sample_json/')
-    df_T = pivot_data('sample_json/', df)
-    print df_T
+    df = conv_json_to_df('Data/sample_json/')
+    df_T = pivot_data('Data/sample_json/', df)
+    df_T.to_csv('Modelling/model_v1_mvp/utility_mat_v1.csv', index=False)

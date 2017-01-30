@@ -1,10 +1,9 @@
 from bs4 import BeautifulSoup
 import requests
-from urllib2 import urlopen, URLError, HTTPError
+from urllib2 import urlopen, URLError
 import json
 import pandas as pd
 import numpy as np
-import re
 import boto
 from boto.s3.key import Key
 from threading import Thread
@@ -14,7 +13,7 @@ import time
 def read_10_users(start, stop):
     userlist = []
     for i in xrange(start,stop+1):
-        link = 'Data/user_ids/user_ids_{}.txt'.format(i)
+        link = 'Data/user_data/user_ids_{}.txt'.format(i)
         with open(link, 'r') as f:
             for line in f:
                 userlist.append(line.split('\n')[0])
@@ -58,7 +57,7 @@ def get_game(userlist, bucket_name, steam_key):
             result = k.set_contents_from_string(json_str)
 
 if __name__ == '__main__':
-    users_1 = read_10_users(71,80)
+    users_1 = read_10_users(1,1)
     # Make 1000 threads
     steam_keys = [os.environ['STEAM_API_KEY'], os.environ['STEAM_API_KEY_BK'], \
                  os.environ['STEAM_API_KEY_ZR'], os.environ['STEAM_API_KEY_TN'], \
