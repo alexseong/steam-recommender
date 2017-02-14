@@ -1,4 +1,5 @@
 
 
-# Steam Connect - A recommendation engine for Steam Users
-### Lawrence Chim
+# Steam Connect - A recommendation engine for Steam users
+#### Lawrence Chim
+
