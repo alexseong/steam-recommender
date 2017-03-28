@@ -10,7 +10,7 @@ to connect Steam users based on similarities in gaming preference. As an avid
 gamer myself, I would like to apply my knowledge of Data Science to a topic
 that I greatly enjoy.
 
-Valve currently does not a recommendation engine in place to for users to
+Valve currently does not have a recommendation engine in place to for users to
 connect with one another.
 
 ### Data
